@@ -1,4 +1,4 @@
-# gabtaxiadmin
+# nes-app
 
 ## Project setup
 ```
@@ -9,12 +9,11 @@ npm install
 ```
 npm run serve
 ```
+
 ### Compiles and minifies for production
 ```
 npm run build
 ```
 
-### VueJs Version
-- Built in VueJs 3 Babel
-
-
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
