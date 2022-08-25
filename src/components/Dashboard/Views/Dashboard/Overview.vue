@@ -143,6 +143,7 @@
     data () {
       return {
         user:[],
+        all:null,
         completedTrips:null,
         cancelledTrips:null,
 				dashboardData:[],
@@ -224,12 +225,14 @@
           var all_drivers = []
           var all_users = []
 
-          res.push(result.data)
+          this.all = result.data.data
+
+          res.push(result.data.data)
           res[0].forEach(element => {
-            if(element.roles =='driver'){
+            if(element.account_type =='driver'){
               all_drivers.push(element)
             }
-            if(element.roles =='passenger'){
+            if(element.account_type =='passenger'){
               all_users.push(element)
             }
           })

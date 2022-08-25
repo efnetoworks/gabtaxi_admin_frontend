@@ -16,7 +16,6 @@ import ServiceTypes from '@/components/Dashboard/Views/Services/ServiceTypes'
 import VAS from '@/components/Dashboard/Views/Services/ValueAddedServices.vue'
 import Trip from '@/components/Dashboard/Views/Trips/Trips.vue'
 import Driver from '@/components/Dashboard/Views/Drivers/Drivers.vue'
-import Passenger from '@/components/Dashboard/Views/Passengers/Passengers.vue'
 import PushNotification from '@/components/Dashboard/Views/Notification/SendNotification.vue'
 import NotificationHistory from '@/components/Dashboard/Views/Notification/History.vue'
 import Devices from '@/components/Dashboard/Views/Device/Devices.vue'
@@ -27,7 +26,11 @@ import Heatmap from '@/components/Dashboard/Views/Geofencing/Heatmap.vue'
 import Zone from '@/components/Dashboard/Views/Geofencing/Zones.vue'
 import Admin from '@/components/Dashboard/Views/Admin/Admin.vue'
 import CreateAdmin from '@/components/Dashboard/Views/Admin/CreateAdmin.vue'
-CreateAdmin
+import DriverDetails from '@/components/Dashboard/Views/Drivers/DriverDetails.vue'
+import DriverUpdate from '@/components/Dashboard/Views/Drivers/DriverUpdate.vue'
+import Passenger from '@/components/Dashboard/Views/Passengers/Passengers.vue'
+import PassengerDetails from '@/components/Dashboard/Views/Passengers/PassengerDetails.vue'
+import PassengerUpdate from '@/components/Dashboard/Views/Passengers/PassengerUpdate.vue'
 import User from '@/javascript/Api/User'
 import axios from 'axios'
 
@@ -70,10 +73,21 @@ let driver = {
     name: 'Driver',
     component: DashboardLayout,
     children: [{
-        path: '/',
-        name: 'Driver',
-        component: Driver
-    }]
+            path: '/',
+            name: 'Driver',
+            component: Driver
+        },
+        {
+            path: 'details/:id',
+            name: 'DriverDetails',
+            component: DriverDetails
+        },
+        {
+            path: 'update/:id',
+            name: 'DriverUpdate',
+            component: DriverUpdate
+        }
+    ]
 }
 
 let passenger = {
@@ -81,10 +95,21 @@ let passenger = {
     name: 'Passenger',
     component: DashboardLayout,
     children: [{
-        path: '/',
-        name: 'Passenger',
-        component: Passenger
-    }]
+            path: '/',
+            name: 'Passenger',
+            component: Passenger
+        },
+        {
+            path: 'details/:id',
+            name: 'PassengerDetails',
+            component: PassengerDetails
+        },
+        {
+            path: 'update/:id',
+            name: 'PassengerUpdate',
+            component: PassengerUpdate
+        }
+    ]
 }
 
 let services = {
@@ -192,8 +217,6 @@ let admin = {
     ]
 }
 
-
-
 const routes = [
     admin,
     loginPage,
@@ -236,7 +259,5 @@ const routes = [
     },
     { path: '*', component: NotFound }
 ];
-
-
 
 export default routes
