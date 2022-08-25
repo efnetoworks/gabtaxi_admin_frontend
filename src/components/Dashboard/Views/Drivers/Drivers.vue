@@ -49,7 +49,7 @@
             <p-button v-if="user.is_banned == 1 && user.is_active == 0" class="mr-2" type="success" size="sm" icon @click.prevent="openModal('mini','Remove Ban','unban', user)" title="remove ban">
               <i class="fa fa-refresh"></i>
             </p-button>
-            <p-button class="mr-2" type="blue" size="sm" icon @click.prevent="openModal('classic',' Trip History', 'trips', user)" title="trip history">
+            <p-button class="mr-2" type="blue" size="sm" icon @click.prevent="tripHistory(user)" title="trip history">
               <i class="fa fa-car"></i>
             </p-button>
           </td>
@@ -57,54 +57,6 @@
         </tr>
       </tbody>
     </table>
-<!-- Classic Modal -->
-            <div id="my-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="my-modal-title">Title</h5>
-                    <button class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <p>Content</p>
-                  </div>
-                  <div class="modal-footer">
-                    Footer
-                  </div>
-                </div>
-              </div>
-            </div>
-              <modal  :show.sync="modals.classic" headerClasses="justify-content-center">
-                <h4 slot="header" class="title title-up">{{ modalTitle }}</h4>
-                <p>
-                  <table class="table" >
-                    <thead>
-                      <tr>
-                        <th>Fullname</th>
-                        <th>Fullname</th>
-                        <th>Fullname</th>
-                        <th>Fullname</th>
-                        <th>Fullname</th>
-                        <th>Fullname</th>
-                        <th>Fullname</th>
-                        <th>Fullname</th>
-                      </tr>
-                    </thead>
-                  </table>
-                </p>
-                <template slot="footer">
-
-                  <div class="left-side">
-                    <p-button type="default" link @click.prevent="modals.classic = false">Never mind</p-button>
-                  </div>
-                  <div class="divider"></div>
-                  <div class="right-side">
-                    <p-button type="danger" link @click.prevent="modals.classic = false">Delete</p-button>
-                  </div>
-                </template>
-              </modal>
        <!-- small modal -->
               <modal :show.sync="modals.mini"
                      class="modal-primary"
@@ -187,6 +139,9 @@
       },
       goToUpdate(user){
         this.$router.push('/driver/update/'+user.id)
+      },
+      tripHistory(user){
+        this.$router.push('/driver/trip/history/'+user.id)
       },
 
       click_yes(){

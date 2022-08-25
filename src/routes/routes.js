@@ -27,10 +27,12 @@ import Zone from '@/components/Dashboard/Views/Geofencing/Zones.vue'
 import Admin from '@/components/Dashboard/Views/Admin/Admin.vue'
 import CreateAdmin from '@/components/Dashboard/Views/Admin/CreateAdmin.vue'
 import DriverDetails from '@/components/Dashboard/Views/Drivers/DriverDetails.vue'
+import DriverTripHistory from '@/components/Dashboard/Views/Drivers/TripHistory.vue'
 import DriverUpdate from '@/components/Dashboard/Views/Drivers/DriverUpdate.vue'
 import Passenger from '@/components/Dashboard/Views/Passengers/Passengers.vue'
 import PassengerDetails from '@/components/Dashboard/Views/Passengers/PassengerDetails.vue'
 import PassengerUpdate from '@/components/Dashboard/Views/Passengers/PassengerUpdate.vue'
+import PassengerTripHistory from '@/components/Dashboard/Views/Passengers/TripHistory.vue'
 import User from '@/javascript/Api/User'
 import axios from 'axios'
 
@@ -86,6 +88,11 @@ let driver = {
             path: 'update/:id',
             name: 'DriverUpdate',
             component: DriverUpdate
+        },
+        {
+            path: 'trip/history/:id',
+            name: 'DriverTripHistory',
+            component: DriverTripHistory
         }
     ]
 }
@@ -108,6 +115,11 @@ let passenger = {
             path: 'update/:id',
             name: 'PassengerUpdate',
             component: PassengerUpdate
+        },
+        {
+            path: 'trip/history/:id',
+            name: 'PassengerTripHistory',
+            component: PassengerTripHistory
         }
     ]
 }

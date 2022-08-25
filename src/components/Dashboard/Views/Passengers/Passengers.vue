@@ -49,7 +49,7 @@
             <p-button v-if="user.is_banned == 1 && user.is_active == 0" class="mr-2" type="success" size="sm" icon @click.prevent="openModal('mini','Remove Ban','unban', user)" title="remove ban">
               <i class="fa fa-refresh"></i>
             </p-button>
-            <p-button class="mr-2" type="blue" size="sm" icon @click.prevent="openModal('classic',' Trip History', 'trips', user)" title="trip history">
+            <p-button class="mr-2" type="blue" size="sm" icon @click.prevent="tripHistory(user)" title="trip history">
               <i class="fa fa-car"></i>
             </p-button>
           </td>
@@ -163,6 +163,9 @@
       },
       goToUpdate(user){
         this.$router.push('/passenger/update/'+user.id)
+      },
+      tripHistory(user){
+        this.$router.push('/passenger/trip/history/'+user.id)
       },
 
       click_yes(){
