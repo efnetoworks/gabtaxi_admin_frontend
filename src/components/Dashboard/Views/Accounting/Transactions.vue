@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Driver Trip History</h3>
+    <h3>Transactions</h3>
      <div>
         <center>
           Filter
@@ -30,14 +30,15 @@
           <th>Passenger Name</th>
           <th>Pickup Location</th>
           <th>Destination</th>
-          <th>Estimated Price</th>
+          <th>Trip Amount</th>
           <th>Estimated Time</th>
           <th>Trip Status</th>
+          <th>Date</th>
           <th>Start Time</th>
           <th>End Time</th>
         </tr>
       </thead>
-      <tbody  :key="tableKey">
+      <tbody :key="tableKey">
         <tr  v-for="(trip, index) in filtered" :key="trip" >
           <td>{{index+1}}</td>
           <td>{{trip.id}}</td>
@@ -48,8 +49,9 @@
           <td>{{trip.amount}}</td>
           <td>{{trip.minute}}</td>
           <td>{{trip.status}}</td>
-          <td>{{trip.created_at}}</td>
-          <td>{{trip.updated_at}}</td>
+          <td>{{ getDate(trip.created_at)}}</td>
+          <td>{{ timeOnly(trip.created_at)}}</td>
+          <td>{{ timeOnly(trip.updated_at)}}</td>
         </tr>
       </tbody>
     </table>
@@ -103,18 +105,12 @@
             });
         });
       },
+
       allTrips(){
         Trip.alltrips().then((res) => {
-          var data = res.data.data.data
-          for (let index = 0; index < data.length; index++) {
-            if(data[index].driver_id == this.$route.params.id){
-              this.alltrips = data
-              this.filtered = data
-              this.datatable()
-            }
-
-          }
-
+          this.alltrips = res.data.data.data
+          this.filtered = res.data.data.data
+          this.datatable()
         })
       },
     },
@@ -122,10 +118,13 @@
     watch:{
       startdate(){
         this.filterTable()
+        console.log('start filtered')
       },
+
 
       enddate(){
         this.filterTable()
+        console.log('start filtered')
       }
     },
 

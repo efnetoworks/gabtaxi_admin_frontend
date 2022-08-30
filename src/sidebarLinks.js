@@ -86,8 +86,12 @@ export default [{
             },
             {
                 name: 'Create Promotion',
-                path: '/promotions/create-poromocode'
+                path: '/promotions/create-promocode'
             },
+            {
+                name: 'Promote Users',
+                path: '/promotions/promote-users'
+            }
         ]
     },
     {
@@ -106,7 +110,41 @@ export default [{
                 path: '/geofence/zone'
             },
         ]
-    }
+    },
+    {
+        name: 'Accounting',
+        icon: 'fa fa-money',
+        children: [{
+                name: 'Transactions',
+                path: '/admin/account/transactions'
+            },
 
+            {
+                name: 'General Report',
+                path: '/admin/account/general-report'
+            },
+            {
+                name: 'Drivers Report',
+                path: '/admin/account/drivers-report'
+            },
+            {
+                name: 'Passengers Report',
+                path: '/admin/account/passengers-report'
+            },
+            {
+                name: 'Trips',
+                path: '/admin/account/trips'
+            },
+
+        ]
+    },
+    {
+        name: 'General Settings',
+        icon: 'fa fa-wrench',
+        children: [{
+            name: 'Trip Percentage',
+            path: '/admin/account/trip-percentage'
+        }, ]
+    }
 
 ]

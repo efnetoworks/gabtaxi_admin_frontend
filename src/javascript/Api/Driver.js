@@ -15,6 +15,15 @@ export default {
     },
     deactivate_driver(id) {
         return Api.post('/admin/driver/detactivate/' + id)
+    },
+    driver_data(id) {
+        return Api.get('/admin/user/data/' + id)
+    },
+    user_wallet(id) {
+        return Api.get('/admin/user-wallet/' + id)
+    },
+    transaction_history(id) {
+        return Api.get('/payments/transactions/history/' + id)
     }
 
 }

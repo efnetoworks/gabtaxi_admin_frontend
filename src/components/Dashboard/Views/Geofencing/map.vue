@@ -65,6 +65,7 @@ export default {
     },
 
     deleteMarkers() {
+      this.setMapOnAll(null);
         this.clearMarkers();
         this.gmarkers = [];
     },

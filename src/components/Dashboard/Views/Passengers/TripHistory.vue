@@ -37,7 +37,7 @@
           <th>End Time</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody :key="tableKey">
         <tr  v-for="(trip, index) in filtered" :key="trip" >
           <td>{{index+1}}</td>
           <td>{{trip.id}}</td>
@@ -82,18 +82,15 @@
             });
         }else{
             if(this.startdate != null && this.enddate != null){
+                this.filtered = []
                 this.alltrips.forEach(element => {
-                    this.filtered = []
-                    if(element.status == this.filter && element.created_at>= this.startdate && element.created_at <= this.enddate){
-                        if(element.status == this.filter){
+
+                    if(element.status == this.filter && helpers.toEpochTime(helpers.dateOnly(element.created_at)) >= helpers.toEpochTime(this.startdate) && helpers.toEpochTime(helpers.dateOnly(element.created_at)) <= helpers.toEpochTime(this.enddate)){
                         this.filtered.push(element)
                         this.tableKey++
                         this.datatable()
-                    }
                 }
                 });
-            }else{
-                //
             }
         }
       },

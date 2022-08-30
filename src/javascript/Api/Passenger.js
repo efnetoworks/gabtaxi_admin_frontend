@@ -18,5 +18,14 @@ export default {
     },
     deactivate_passenger(id) {
         return Api.post('/admin/passenger/detactivate/' + id)
+    },
+    passenger_data(id) {
+        return Api.get('/admin/passenger/data/' + id)
+    },
+    user_wallet(id) {
+        return Api.get('/admin/user-wallet/' + id)
+    },
+    transaction_history(id) {
+        return Api.get('/payments/transactions/history/' + id)
     }
 }

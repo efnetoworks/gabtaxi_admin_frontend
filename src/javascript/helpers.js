@@ -10,7 +10,12 @@ export default {
         let seconds = time.getSeconds()
         var ampm = hours >= 12 ? 'pm' : 'am'
         return hours + ":" + minutes + " " + ampm
-
     },
+    dateOnly(date) {
+        return date.substring(0, 10)
+    },
+    toEpochTime(time) {
+        return new Date(time).getTime()
+    }
 
 }

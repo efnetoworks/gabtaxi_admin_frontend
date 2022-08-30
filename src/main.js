@@ -44,10 +44,10 @@ import 'datatables.net-dt/css/jquery.dataTables.min.css'
 import './assets/sass/paper-dashboard.scss'
 import './assets/sass/demo.scss'
 
-
-
 import sidebarLinks from './sidebarLinks'
 import './registerServiceWorker'
+// helpers
+import Helpers from '../src/javascript/helpers'
 // plugin setup
 Vue.use(VueRouter)
 Vue.use(VueRouterPrefetch)
@@ -59,6 +59,7 @@ Vue.use(SideBar, { sidebarLinks: sidebarLinks })
 locale.use(lang)
 
 window.$ = $
+window.helpers = Helpers
 
 // configure router
 const router = new VueRouter({

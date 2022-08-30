@@ -21,6 +21,7 @@ import NotificationHistory from '@/components/Dashboard/Views/Notification/Histo
 import Devices from '@/components/Dashboard/Views/Device/Devices.vue'
 import Promotions from '@/components/Dashboard/Views/Promotion/Promotions.vue'
 import CreatePromocode from '@/components/Dashboard/Views/Promotion/Createpromotion.vue'
+import PromoteUsers from '@/components/Dashboard/Views/Promotion/PromoteUsers.vue'
 import Geofence from '@/components/Dashboard/Views/Geofencing/Geofence.vue'
 import Heatmap from '@/components/Dashboard/Views/Geofencing/Heatmap.vue'
 import Zone from '@/components/Dashboard/Views/Geofencing/Zones.vue'
@@ -33,6 +34,15 @@ import Passenger from '@/components/Dashboard/Views/Passengers/Passengers.vue'
 import PassengerDetails from '@/components/Dashboard/Views/Passengers/PassengerDetails.vue'
 import PassengerUpdate from '@/components/Dashboard/Views/Passengers/PassengerUpdate.vue'
 import PassengerTripHistory from '@/components/Dashboard/Views/Passengers/TripHistory.vue'
+import AccountDashboard from '@/components/Dashboard/Views/Accounting/Dashboard.vue'
+import Transactions from '@/components/Dashboard/Views/Accounting/Transactions.vue'
+import AccountTrips from '@/components/Dashboard/Views/Accounting/Trips.vue'
+import GeneralReport from '@/components/Dashboard/Views/Accounting/Reports/GeneralReports/report.vue'
+import DriversReport from '@/components/Dashboard/Views/Accounting/Reports/DriverReports/report.vue'
+import PassengersReport from '@/components/Dashboard/Views/Accounting/Reports/PassengerReports/report.vue'
+import DriverReport from '@/components/Dashboard/Views/Accounting/Reports/DriverReports/driver.vue'
+import PassengerReport from '@/components/Dashboard/Views/Accounting/Reports/PassengerReports/user.vue'
+import TripPercentage from '@/components/Dashboard/Views/Settings/TripPercentage'
 import User from '@/javascript/Api/User'
 import axios from 'axios'
 
@@ -178,15 +188,20 @@ let promotion = {
     name: 'promos',
     component: DashboardLayout,
     children: [{
-            path: 'promocodes',
+            path: 'promote-users',
             name: 'Promotions',
             component: Promotions
         },
         {
-            path: 'create-poromocode',
+            path: 'create-promocode',
             name: 'CreatePromocode',
             component: CreatePromocode
         },
+        {
+            path: 'promote-users',
+            name: 'PromoteUsers',
+            component: PromoteUsers
+        }
     ]
 }
 
@@ -229,8 +244,62 @@ let admin = {
     ]
 }
 
+let accounting = {
+    path: '/admin/account',
+    name: 'adminaccount',
+    component: DashboardLayout,
+    children: [{
+            path: '/',
+            name: 'AccountDashboard',
+            component: AccountDashboard
+        },
+        {
+            path: 'transactions',
+            name: 'Transactions',
+            component: Transactions
+        },
+        {
+            path: 'general-report',
+            name: 'GeneralReport',
+            component: GeneralReport
+        },
+        {
+            path: 'drivers-report',
+            name: 'DriversReport',
+            component: DriversReport
+        },
+        {
+            path: 'passengers-report',
+            name: 'PassengersReport',
+            component: PassengersReport
+        },
+        {
+            path: 'driver-report/:id',
+            name: 'DriverReport',
+            component: DriverReport
+        },
+        {
+            path: 'passenger-report/:id',
+            name: 'PassengerReport',
+            component: PassengerReport
+        },
+        {
+            path: 'trips',
+            name: 'AccountTrips',
+            component: AccountTrips
+        },
+        {
+            path: 'trip-percentage',
+            name: 'TripPercentage',
+            component: TripPercentage
+        },
+
+    ]
+}
+
 const routes = [
     admin,
+    accounting,
     loginPage,
     lockPage,
     services,
