@@ -12,11 +12,11 @@
 
         </navbar-toggle-button>
       </div>
-      <a class="navbar-brand" href="#pablo">GabTaxi Admin</a>
+      <a class="navbar-brand" href="#">{{details.name}}</a>
     </div>
 
     <template slot="navbar-menu">
-      <form>
+      <!-- <form>
         <div class="input-group no-border">
           <input type="text" value="" class="form-control" placeholder="Search...">
           <div class="input-group-append">
@@ -25,52 +25,21 @@
             </div>
           </div>
         </div>
-      </form>
- <ul class="navbar-nav">
-        <!-- <li class="nav-item">
-          <a class="nav-link btn-magnify" href="#pablo">
-            <i class="nc-icon nc-layout-11"></i>
-            <p>
-              <span class="d-lg-none d-md-block">Stats</span>
-            </p>
-          </a>
-        </li> -->
-        <!-- <drop-down icon="nc-icon nc-bell-55" tag="li"
-                   position="right"
-                   direction="none"
-                   class="nav-item btn-rotate dropdown">
-          <a slot="title"
-             slot-scope="{isOpen}"
-             class="nav-link dropdown-toggle"
-             data-toggle="dropdown"
-             aria-haspopup="true"
-             :aria-expanded="isOpen">
-            <i class="nc-icon nc-bell-55"></i>
-            <p>
-              <span class="d-lg-none d-md-block">Some Actions</span>
-            </p>
-          </a>
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </drop-down> -->
+      </form> -->
+      <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link btn-rotate bg-danger text-light" href="#" @click.prevent="logout">
             <i class="fa fa-power-off" aria-hidden="true"></i>
           </a>
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link btn-rotate bg-dark text-light" href="/lock">
-            <i class="fa fa-lock" aria-hidden="true"></i>
-          </a>
-        </li> -->
       </ul>
     </template>
   </navbar>
 </template>
 <script>
   import { Navbar, NavbarToggleButton } from '@/components/UIComponents'
-  import User from '@/javascript/Api/User'
+  import Auth from '@/javascript/Api/Auth'
+  import Details from '@/javascript/Api/BusinessDetails'
 
   export default {
     components: {
@@ -80,10 +49,16 @@
     data() {
       return {
         activeNotifications: false,
-        showNavbar: false
+        showNavbar: false,
+        details:null
       }
     },
     methods: {
+      business_details(){
+        Details.details().then((result) => {
+          this.details = result.data
+        })
+      },
       capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1)
       },
@@ -107,11 +82,15 @@
       },
 
       logout(){
-        User.logout().then(() => {
+        Auth.logout().then(() => {
           localStorage.clear()
           this.$router.push({name:'Login'})
         })
       }
+    },
+
+    created(){
+      this.business_details()
     }
   }
 

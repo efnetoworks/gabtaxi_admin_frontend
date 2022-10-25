@@ -1,9 +1,9 @@
 {
-    "name": "nigerian-emergency-notification-system",
+    "name": "beelion-app",
     "version": "2.3.0",
     "private": true,
-    "description": "This is the official Nigeria Emergency Notification Admin App",
-    "author": "cristi.jora <ef-technology>",
+    "description": "This is Business Management System",
+    "author": "ikenna.anikwe <eddyiyke3@gmail.com>",
     "scripts": {
         "build": "vue-cli-service build",
         "dev": "vue-cli-service serve --open",
@@ -31,6 +31,7 @@
         "nprogress": "^0.2.0",
         "perfect-scrollbar": "^1.5.0",
         "register-service-worker": "^1.7.1",
+        "search-dropdown-vue": "^1.0.2",
         "sip.js": "^0.20.0",
         "sweetalert2": "^9.17.2",
         "topojson": "^3.0.2",

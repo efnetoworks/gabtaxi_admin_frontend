@@ -1,15 +1,26 @@
 import Api from "./Api"
-import UserApi from "./UserApi"
+
 export default {
-    login(form) {
-        return Api.post('/login', form)
+    create(form) {
+        return Api.post('/user/create', form)
     },
-
-    logout() {
-        return Api.post('/logout')
+    update(form, id) {
+        return Api.post('/user/update/' + id, form)
     },
-
+    details(id) {
+        return Api.get('/user/' + id)
+    },
+    delete(id) {
+        return Api.post('/user/delete/' + id)
+    },
+    user_roles(id) {
+        return Api.post('/user/assign/' + id)
+    },
+    all_users() {
+        return Api.get('/user')
+    },
     auth() {
-        return UserApi.get('/user')
+        return Api.get('/me')
     }
+
 }

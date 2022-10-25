@@ -4,147 +4,109 @@ export default [{
         path: '/admin/overview'
     },
     {
-        name: 'Admin',
-        icon: 'fa fa-user-o',
-        children: [{
-                name: 'Admin',
-                path: '/admin/all-admin'
-            },
-            {
-                name: 'Create Admin',
-                path: '/admin/create-admin'
-            },
-        ]
-    },
-
-    {
-        name: 'Services',
-        icon: 'fa fa-wrench',
-
-        children: [{
-                name: 'Locations',
-                path: '/services/location'
-            },
-            {
-                name: 'Value Added Services',
-                path: '/services/value-added-services'
-            },
-            {
-                name: 'Categories',
-                path: '/services/categories'
-            },
-            {
-                name: 'Types',
-                path: '/services/types'
-            },
-            {
-                name: 'Location Types',
-                path: '/services/location-types'
-            }
-        ]
-    },
-    {
-        name: 'Trips',
-        icon: 'fa fa-car',
-        path: '/trips'
-    },
-    {
-        name: 'Devices',
-        icon: 'fa fa-tablet',
-        path: '/devices'
-    },
-    {
-        name: 'Drivers',
-        icon: 'fa fa-user',
-        path: '/driver'
-    },
-    {
-        name: 'Passengers',
+        name: 'Users',
         icon: 'fa fa-users',
-        path: '/passenger'
-    },
-    {
-        name: 'Push Notification',
-        icon: 'fa fa-paper-plane',
+        collapsed: true,
         children: [{
-                name: 'Notification History',
-                path: '/notification/history'
+                name: 'Users',
+                path: '/user/all'
             },
             {
-                name: 'Send Notification',
-                path: '/notification/send-notification'
-            },
-        ]
-
-    },
-    {
-        name: 'Promotion',
-        icon: 'fa fa-gift',
-        children: [{
-                name: 'Promotions',
-                path: '/promotions/promocodes'
-            },
-            {
-                name: 'Create Promotion',
-                path: '/promotions/create-promocode'
-            },
-            {
-                name: 'Promote Users',
-                path: '/promotions/promote-users'
-            }
-        ]
-    },
-    {
-        name: 'Geofence',
-        icon: 'fa fa-globe',
-        children: [{
-                name: 'Geofence',
-                path: '/geofence/geofence'
-            },
-            {
-                name: 'Heat Map',
-                path: '/geofence/heatmap'
-            },
-            {
-                name: 'Zone',
-                path: '/geofence/zone'
+                name: 'Add New User',
+                path: '/user/create'
             },
         ]
     },
     {
-        name: 'Accounting',
-        icon: 'fa fa-money',
+        name: 'Product',
+        icon: 'fa fa-product-hunt',
+        collapsed: true,
         children: [{
-                name: 'Transactions',
-                path: '/admin/account/transactions'
+                name: 'Categories',
+                path: '/category/all'
+            },
+            {
+                name: 'Products',
+                path: '/product/all'
+            },
+            {
+                name: 'Add New Product',
+                path: '/product/create'
             },
 
+        ]
+    },
+    {
+        name: 'Purchases',
+        icon: 'fa fa-refresh',
+        collapsed: true,
+        children: [{
+                name: 'Purchases',
+                path: '/purchase/all'
+            },
+            {
+                name: 'Add New Purchase',
+                path: '/purchase/create'
+            },
+
+        ]
+    },
+    {
+        name: 'Customers',
+        icon: 'fa fa-user',
+        collapsed: true,
+        children: [{
+                name: 'Customers',
+                path: '/customer/all'
+            },
+            {
+                name: 'New Customer',
+                path: '/customer/create'
+            },
+
+        ]
+    },
+    {
+        name: 'Expenditure',
+        icon: 'fa fa-plus',
+        collapsed: true,
+        children: [{
+                name: 'All Expenditures',
+                path: '/expenditure/all'
+            },
+            {
+                name: 'New Expenditure',
+                path: '/expenditure/create'
+            },
+            {
+                name: 'All Expenditure Types',
+                path: '/expenditure/alltype'
+            },
+            {
+                name: 'New Expenditure Type',
+                path: '/expenditure/type'
+            },
+
+        ]
+    },
+    {
+        name: 'Sales Point',
+        icon: 'fa fa-bars',
+        path: '/sales-point'
+    },
+    {
+        name: 'Report',
+        icon: 'fa fa-book',
+        collapsed: true,
+        children: [{
+                name: 'Sales Report',
+                path: '/report/sales'
+            },
             {
                 name: 'General Report',
-                path: '/admin/account/general-report'
-            },
-            {
-                name: 'Drivers Report',
-                path: '/admin/account/drivers-report'
-            },
-            {
-                name: 'Passengers Report',
-                path: '/admin/account/passengers-report'
-            },
-            {
-                name: 'Trips',
-                path: '/admin/account/trips'
+                path: '/report/general'
             },
 
         ]
     },
-    {
-        name: 'General Settings',
-        icon: 'fa fa-wrench',
-        children: [{
-            name: 'Trip Percentage',
-            path: '/admin/account/trip-percentage'
-        }, ]
-    }
-
 ]

@@ -5,7 +5,7 @@
     </div>
     <div class="info">
       <a data-toggle="collapse" :aria-expanded="!isClosed" @click.prevent="toggleMenu">
-         <span>
+         <span v-if="user != null">
            {{ user.fullname }} <br />
         </span>
       </a>

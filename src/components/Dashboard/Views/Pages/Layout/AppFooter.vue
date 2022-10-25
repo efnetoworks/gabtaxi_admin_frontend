@@ -5,13 +5,14 @@
         <nav class="footer-nav">
           <ul>
             <li>
-              <a href="https://www.creative-tim.com" target="_blank" rel="noopener">E.F NETWORK</a>
+              <a href="https://www.ikebeelion.com" target="_blank" rel="noopener">ikebeelion</a><br>
+              08147082856
             </li>
           </ul>
         </nav>
         <div class="credits ml-auto">
           <div class="copyright">
-            E.F.N &copy; 2022
+            IK.B.N &copy; {{ date }}
           </div>
         </div>
       </div>
@@ -19,8 +20,24 @@
   </footer>
 </template>
 <script>
+import helpers from '@/javascript/helpers';
   export default {
-    name: 'main-footer'
+    name: 'main-footer',
+    data() {
+      return {
+        date:null
+      }
+    },
+    methods: {
+      current_date(){
+        const d = new Date()
+        this.date = d.getFullYear();
+      },
+    },
+
+    created() {
+      this.current_date()
+    },
   }
 </script>
 <style>

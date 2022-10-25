@@ -10,105 +10,11 @@
                     :title="stats.value">
           <div class="stats" slot="footer">
             <i :class="stats.footerIcon"></i>
-            {{stats.footerText}} {{stats.footerTextCount}}
+            Today
           </div>
         </stats-card>
       </div>
     </div>
- <div class="row">
-      <div class="col-lg-3 col-sm-6">
-        <card>
-          <div slot="header" class="card-text">
-            <center><h4 class="card-title">Trips Completed Today</h4></center>
-                <center>
-                  <i class='fa fa-car fa-4x'></i>
-                   <h1>{{completedTrips}}</h1>
-                </center>
-          </div>
-
-        </card>
-      </div>
-
-      <div class="col-lg-3 col-sm-6">
-        <card>
-          <div slot="header" class="card-text">
-            <center><h4 class="card-title">Trips CancelledToday</h4></center>
-               <center>
-                  <span class='fa-stack fa-2x'>
-                      <i class='fa fa-car fa-stack-1x'></i>
-                      <i class='fa fa-ban fa-stack-2x'></i>
-                  </span>
-                  <h1>{{ cancelledTrips }}</h1>
-              </center>
-          </div>
-        </card>
-      </div>
-            <div class="col-lg-3 col-sm-6">
-        <card>
-          <div slot="header" class="card-text">
-            <center><h4 class="card-title"><i class='fa fa-car fa-1x'></i>Driver Most Trips <i class='fa fa-check fa-1x'></i></h4></center>
-               <table class="table">
-                <tr>
-                  <th>name</th>
-                  <td>{{dashboardData['name']}}</td>
-                </tr>
-                <tr>
-                  <th>trip count</th>
-                  <td>{{dashboardData['trip_completed']}}</td>
-                </tr>
-                <tr>
-                  <th>average rating</th>
-                  <td>{{dashboardData['averageRating']}}</td>
-                </tr>
-               </table>
-          </div>
-        </card>
-      </div>
-            <div class="col-lg-3 col-sm-6">
-        <card>
-          <div slot="header" class="card-text">
-            <center><h4 class="card-title">
-            <span class='fa-stack'>
-                      <i class='fa fa-car fa-stack-1x'></i>
-                      <i class='fa fa-ban fa-stack-2x'></i>
-                  </span>Driver Most Cancelled<i class='fa fa-times fa-1x'></i></h4></center>
-               <table class="table">
-                <tr>
-                  <th>name</th>
-                  <td>{{dashboardCancelled['name']}}</td>
-                </tr>
-                <tr>
-                  <th>trip count</th>
-                  <td>{{dashboardCancelled['trip_cancelled']}}</td>
-                </tr>
-                <tr>
-                  <th></th>
-                  <td></td>
-                </tr>
-
-               </table>
-          </div>
-        </card>
-      </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-          <div class="card">
-            <div class="card-header">
-            </div>
-            <div class="card-body">
-                <div class="col-md-7">
-                  <world-map></world-map>
-                </div>
-            </div>
-          </div>
-        </div>
-    </div>
-
-
-
-
-
   </div>
 </template>
 <script>
@@ -119,8 +25,7 @@
   import {Badge} from '@/components/UIComponents'
   import Loading from '@/components/Dashboard/Layout/LoadingMainPanel.vue'
   import TaskList from './Widgets/TaskList'
-  import Dashboard from '@/javascript/Api/Dashboard'
-  import db from '@/fbdb/dataservice'
+import Sales from '@/javascript/Api/Sales';
   const WorldMap = () => ({
     component: import('./../Maps/FullScreenMap.vue'),
     loading: Loading,
@@ -157,138 +62,66 @@
           {
             type: 'dark',
             icon: 'fa fa-list',
-            title: 'New Drivers',
-            value: '0',
+            title: 'Cash Payments',
+            value: 0,
             footerText:'All Drivers',
             footerTextCount: '0',
           },
           {
             type: 'dark',
             icon: 'fa fa-check',
-            title: 'New Users',
-            value: '0',
+            title: 'Card Payments',
+            value: 0,
             footerText: 'All Passengers',
             footerTextCount: '0',
           },
           {
             type: 'dark',
             icon: 'fa fa-hourglass',
-            title: 'Online Drivers',
-            value: '0',
+            title: 'Bank Transfer',
+            value: 0,
             footerText: 'Realtime Update',
           },
           {
             type: 'dark',
             icon: 'fa fa-exchange',
-            title: 'Drivers on Trip',
-            value: '0',
+            title: 'Wallet Payment',
+            value: 0,
             footerText: 'Realtime Update',
           },
         ],
-
+        sales:null
       }
     },
     methods: {
-      completedtrips(){
-                Dashboard.completedTrips().then((result) => {
-                    this.statsCards[0].value = result.data.data.data
-                    this.completedTrips = result.data.data.data
-                })
-            },
+      sales_today(){
+        Sales.sales_today().then((result) => {
+          this.sales = result.data.data
+          var cash = 0
+          var card = 0
+          var transfer = 0
+          var wallet = 0
 
-            cancelledtrips(){
-                Dashboard.cancelledTrips().then((result) => {
-                    this.statsCards[1].value = result.data.data.data
-                    this.cancelledTrips = result.data.data.data
-                })
-            },
-
-			driverDataCompleted(){
-				Dashboard.drivercompletedtrips().then((result) => {
-					this.dashboardData = result.data.data
-				})
-			},
-
-			driverDataCancelled(){
-				Dashboard.drivercancelledtrips().then((result) => {
-					this.dashboardCancelled = result.data.data
-				})
-			},
-
-			details(){
-				this.$router.push('/details')
-			},
-
-      allusers(){
-        Dashboard.allUsers().then((result) => {
-          var res = []
-          var all_drivers = []
-          var all_users = []
-
-          this.all = result.data.data
-
-          res.push(result.data.data)
-          res[0].forEach(element => {
-            if(element.account_type =='driver'){
-              all_drivers.push(element)
+          for (let index = 0; index < this.sales.length; index++) {
+            if(this.sales[index].sales[0].payment_method == "cash"){
+              cash =  cash + this.sales[index].amount
+            }else if(this.sales[index].payment_method == "card"){
+              card =  card + this.sales[index].amount
+            }else if(this.sales[index].payment_method == "transfer"){
+              transfer =  transfer + this.sales[index].amount
+            }else{
+              wallet =  wallet + this.sales[index].amount
             }
-            if(element.account_type =='passenger'){
-              all_users.push(element)
-            }
-          })
-
-          this.statsCards[0].footerTextCount = all_drivers.length
-          this.statsCards[1].footerTextCount = all_users.length
-
-
-          // this.statsCards.footerTextCount
+          }
+          this.statsCards[0].value = cash
+          this.statsCards[1].value = card
+          this.statsCards[2].value = transfer
+          this.statsCards[3].value = wallet
         })
-      },
-			onDataChange(items){
-				let _onlineDrivers = [];
-				let currDate = new Date().getTime()
-
-				items.forEach((item) => {
-					let key = item.key;
-					let data = item.val();
-					_onlineDrivers.push({
-						key:key,
-						data:data
-					});
-				});
-
-				var availDrivers = []
-				_onlineDrivers.forEach((element) => {
-					var timeDiff = currDate - element.data['timeStamp']
-					if(timeDiff/1000  < 120 && element.data['status'] == 'online'  ){
-						availDrivers.push(element)
-					}
-				})
-
-				this.statsCards[2].value = availDrivers.length;
-				this.spanKey++
-				this.driversData = availDrivers
-				// get drivers on trip
-				var driversOnTrip = []
-				this.driversData.forEach(driver => {
-						if(driver.data.status == 'onTrip'){
-							driversOnTrip.push(driver)
-						}
-					})
-				this.statsCards[3].value = driversOnTrip.length
-			},
-
-			onlinedrivers(){
-				db.getAll().on("value", this.onDataChange)
-			},
+      }
     },
     created(){
-      this.completedtrips()
-      this.cancelledtrips()
-			this.driverDataCompleted()
-			this.driverDataCancelled()
-			this.onlinedrivers()
-      this.allusers()
+      this.sales_today()
     }
   }
 
@@ -296,3 +129,4 @@
 <style>
 
 </style>
+

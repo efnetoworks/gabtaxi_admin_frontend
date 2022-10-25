@@ -11,7 +11,7 @@
           </div>
       </a>
       <a class="simple-text logo-normal">
-          {{ title }}
+          {{ details.name }}
       </a>
     </div>
     <div class="sidebar-wrapper" ref="sidebarScrollArea">
@@ -37,16 +37,17 @@
 </template>
 <script>
   import 'perfect-scrollbar/css/perfect-scrollbar.css'
+  import Details from '@/javascript/Api/BusinessDetails'
   export default {
     props: {
       title: {
         type: String,
-        default: 'GabTaxi',
+        default: 'My Store',
         description: 'Sidebar title'
       },
       backgroundColor: {
         type: String,
-        default: 'white',
+        default: 'black',
         validator: (value) => {
           let acceptedValues = ['white', 'brown','gabblue', 'black', 'armyred', 'danger']
           return acceptedValues.indexOf(value) !== -1
@@ -55,7 +56,7 @@
       },
       activeColor: {
         type: String,
-        default: 'primary',
+        default: 'info',
         validator: (value) => {
           let acceptedValues = ['primary', 'info', 'success', 'warning', 'danger']
           return acceptedValues.indexOf(value) !== -1
@@ -64,7 +65,7 @@
       },
       logo: {
         type: String,
-        default: '/static/img/gablogo.png',
+        default: '/static/img/shoppingCart.png',
         description: 'Sidebar Logo'
       },
       sidebarLinks: {
@@ -77,12 +78,23 @@
         default: true
       }
     },
+    data() {
+      return {
+        details:null
+      }
+    },
     provide() {
       return {
         autoClose: this.autoClose
       }
     },
     methods: {
+      getDetails(){
+        Details.details().then((result) => {
+          this.details = result.data
+        })
+
+      },
       async initScrollBarAsync () {
         let isWindows = navigator.platform.startsWith('Win');
         if(!isWindows) {
@@ -94,6 +106,7 @@
     },
     mounted () {
       this.initScrollBarAsync()
+      this.getDetails()
     },
     beforeDestroy () {
       if (this.$sidebar.showSidebar) {

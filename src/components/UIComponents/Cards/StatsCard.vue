@@ -7,7 +7,7 @@
             <div>
             <center>
               <h3><b>{{smallTitle}}</b></h3>
-              <p class="card-title"><h3>{{title}}</h3></p></center>
+              <p class="card-title"><h3>&#8358; {{title.toLocaleString()}}</h3></p></center>
             </div>
         </div>
       </div>

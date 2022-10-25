@@ -9,42 +9,32 @@ const Widgets = () =>
 
 import Login from '../components/Dashboard/Views/Pages/Login.vue'
 import Lock from '../components/Dashboard/Views/Pages/Lock.vue'
-import ServiceLocations from '@/components/Dashboard/Views/Services/ServiceLocations.vue'
-import ServiceCategories from '@/components/Dashboard/Views/Services/ServiceCategories.vue'
-import LocationServiceTypes from '@/components/Dashboard/Views/Services/LocationServiceTypes.vue'
-import ServiceTypes from '@/components/Dashboard/Views/Services/ServiceTypes'
-import VAS from '@/components/Dashboard/Views/Services/ValueAddedServices.vue'
-import Trip from '@/components/Dashboard/Views/Trips/Trips.vue'
-import Driver from '@/components/Dashboard/Views/Drivers/Drivers.vue'
-import PushNotification from '@/components/Dashboard/Views/Notification/SendNotification.vue'
-import NotificationHistory from '@/components/Dashboard/Views/Notification/History.vue'
-import Devices from '@/components/Dashboard/Views/Device/Devices.vue'
-import Promotions from '@/components/Dashboard/Views/Promotion/Promotions.vue'
-import CreatePromocode from '@/components/Dashboard/Views/Promotion/Createpromotion.vue'
-import PromoteUsers from '@/components/Dashboard/Views/Promotion/PromoteUsers.vue'
-import Geofence from '@/components/Dashboard/Views/Geofencing/Geofence.vue'
-import Heatmap from '@/components/Dashboard/Views/Geofencing/Heatmap.vue'
-import Zone from '@/components/Dashboard/Views/Geofencing/Zones.vue'
-import Admin from '@/components/Dashboard/Views/Admin/Admin.vue'
-import CreateAdmin from '@/components/Dashboard/Views/Admin/CreateAdmin.vue'
-import DriverDetails from '@/components/Dashboard/Views/Drivers/DriverDetails.vue'
-import DriverTripHistory from '@/components/Dashboard/Views/Drivers/TripHistory.vue'
-import DriverUpdate from '@/components/Dashboard/Views/Drivers/DriverUpdate.vue'
-import Passenger from '@/components/Dashboard/Views/Passengers/Passengers.vue'
-import PassengerDetails from '@/components/Dashboard/Views/Passengers/PassengerDetails.vue'
-import PassengerUpdate from '@/components/Dashboard/Views/Passengers/PassengerUpdate.vue'
-import PassengerTripHistory from '@/components/Dashboard/Views/Passengers/TripHistory.vue'
-import AccountDashboard from '@/components/Dashboard/Views/Accounting/Dashboard.vue'
-import Transactions from '@/components/Dashboard/Views/Accounting/Transactions.vue'
-import AccountTrips from '@/components/Dashboard/Views/Accounting/Trips.vue'
-import GeneralReport from '@/components/Dashboard/Views/Accounting/Reports/GeneralReports/report.vue'
-import DriversReport from '@/components/Dashboard/Views/Accounting/Reports/DriverReports/report.vue'
-import PassengersReport from '@/components/Dashboard/Views/Accounting/Reports/PassengerReports/report.vue'
-import DriverReport from '@/components/Dashboard/Views/Accounting/Reports/DriverReports/driver.vue'
-import PassengerReport from '@/components/Dashboard/Views/Accounting/Reports/PassengerReports/user.vue'
-import TripPercentage from '@/components/Dashboard/Views/Settings/TripPercentage'
+import Users from '../components/Dashboard/Views/Users/Users.vue'
+import CreateUser from '../components/Dashboard/Views/Users/CreateUser.vue'
+import UserDetails from '../components/Dashboard/Views/Users/UserDetails.vue'
+import UpdateUser from '../components/Dashboard/Views/Users/UpdateUser.vue'
 import User from '@/javascript/Api/User'
-import axios from 'axios'
+import Category from '../components/Dashboard/Views/Products/Categories.vue'
+import CategoryDetails from '../components/Dashboard/Views/Products/CategoryDetails.vue'
+import Products from '../components/Dashboard/Views/Products/Product.vue'
+import CreateProduct from '../components/Dashboard/Views/Products/CreateProduct.vue'
+import ProductDetails from '../components/Dashboard/Views/Products/ProductDetails.vue'
+import Purchases from '../components/Dashboard/Views/Purchases/Purchases.vue'
+import CreatePurchase from '../components/Dashboard/Views/Purchases/CreatePurchase.vue'
+import UpdatePurchase from '../components/Dashboard/Views/Purchases/UpdatePurchase.vue'
+import Customers from '../components/Dashboard/Views/Customers/Customers.vue'
+import CustomerDetails from '../components/Dashboard/Views/Customers/CustomerDetails.vue'
+import UpdateCustomer from '../components/Dashboard/Views/Customers/UpdateCustomer.vue'
+import CreateCustomer from '../components/Dashboard/Views/Customers/CreateCustomer.vue'
+import CreateExpType from '../components/Dashboard/Views/Expenditure/CreateType.vue'
+import AllExpType from '../components/Dashboard/Views/Expenditure/AllTypes.vue'
+import CreateExpenditure from '../components/Dashboard/Views/Expenditure/NewExpenditure.vue'
+import AllExpenditure from '../components/Dashboard/Views/Expenditure/AllExpenditure.vue'
+import ExpReport from '../components/Dashboard/Views/Expenditure/ExpenditureReport.vue'
+import SalesPoint from '../components/Dashboard/Views/SalesPoint/PointOfSale.vue'
+import SalesReport from '../components/Dashboard/Views/Report/SalesReport.vue'
+import GeneralReport from '../components/Dashboard/Views/Report/GeneralReport.vue'
+
 
 let loginPage = {
     path: '/',
@@ -58,258 +48,217 @@ let lockPage = {
     component: Lock
 }
 
-let trips = {
-    path: '/trips',
-    name: 'trip',
+let user = {
+    path: '/user',
+    name: 'user',
     component: DashboardLayout,
     children: [{
-        path: '/',
-        name: 'Trips',
-        component: Trip
-    }]
-}
-
-let devices = {
-    path: '/devices',
-    name: 'devices',
-    component: DashboardLayout,
-    children: [{
-        path: '/',
-        name: 'Devices',
-        component: Devices
-    }]
-}
-
-let driver = {
-    path: '/driver',
-    name: 'Driver',
-    component: DashboardLayout,
-    children: [{
-            path: '/',
-            name: 'Driver',
-            component: Driver
+            path: 'create',
+            name: 'CreateUser',
+            component: CreateUser
         },
         {
-            path: 'details/:id',
-            name: 'DriverDetails',
-            component: DriverDetails
+            path: 'all',
+            name: 'AllUsers',
+            component: Users
         },
         {
             path: 'update/:id',
-            name: 'DriverUpdate',
-            component: DriverUpdate
-        },
-        {
-            path: 'trip/history/:id',
-            name: 'DriverTripHistory',
-            component: DriverTripHistory
-        }
-    ]
-}
-
-let passenger = {
-    path: '/passenger',
-    name: 'Passenger',
-    component: DashboardLayout,
-    children: [{
-            path: '/',
-            name: 'Passenger',
-            component: Passenger
+            name: 'UpdateUser',
+            component: UpdateUser
         },
         {
             path: 'details/:id',
-            name: 'PassengerDetails',
-            component: PassengerDetails
+            name: 'UserDetails',
+            component: UserDetails
+        },
+
+    ]
+}
+
+let category = {
+    path: '/category',
+    name: 'Category',
+    component: DashboardLayout,
+    children: [{
+        path: 'all',
+        name: 'all categories',
+        component: Category
+    }, {
+        path: 'details/:id',
+        name: 'categories details',
+        component: CategoryDetails
+    }]
+}
+
+let product = {
+    path: '/product',
+    name: 'products',
+    component: DashboardLayout,
+    children: [{
+            path: 'all',
+            name: 'all products',
+            component: Products
+        },
+        {
+            path: 'create',
+            name: 'add new product',
+            component: CreateProduct
+        },
+        {
+            path: 'detail/:id',
+            name: 'product detail',
+            component: ProductDetails
+        },
+        // {
+        //     path: 'update/:id',
+        //     name: 'update product',
+        //     component: UpdateProduct
+
+        // }
+    ]
+}
+
+let purchase = {
+    path: '/purchase',
+    name: 'purchases',
+    component: DashboardLayout,
+    children: [{
+            path: 'all',
+            name: 'all_purchases',
+            component: Purchases
+        },
+        {
+            path: 'create',
+            name: 'add new purchase',
+            component: CreatePurchase
         },
         {
             path: 'update/:id',
-            name: 'PassengerUpdate',
-            component: PassengerUpdate
-        },
-        {
-            path: 'trip/history/:id',
-            name: 'PassengerTripHistory',
-            component: PassengerTripHistory
+            name: 'update purchase',
+            component: UpdatePurchase
+
         }
     ]
 }
 
-let services = {
-    path: '/services',
-    name: 'Services',
+let customers = {
+    path: '/customer',
+    name: 'Customers',
     component: DashboardLayout,
     children: [{
-            path: 'location',
-            name: 'ServiceLocation',
-            component: ServiceLocations
+            path: 'all',
+            name: 'all_customers',
+            component: Customers
         },
         {
-            path: 'categories',
-            name: 'ServiceCategory',
-            component: ServiceCategories
+            path: 'create',
+            name: 'create_customer',
+            component: CreateCustomer
         },
         {
-            path: 'location-types',
-            name: 'LocationServiceTypes',
-            component: LocationServiceTypes
+            path: 'details/:id',
+            name: 'customer_details',
+            component: CustomerDetails
         },
         {
-            path: 'types',
-            name: 'ServiceTypes',
-            component: ServiceTypes
-        },
-        {
-            path: 'value-added-services',
-            name: 'ValueAddedServices',
-            component: VAS
+            path: 'update/:id',
+            name: 'update_customer',
+            component: UpdateCustomer
         }
     ]
+
 }
 
-let notification = {
-    path: '/notification',
-    name: 'PushNotification',
+let expenditure = {
+    path: '/expenditure',
+    name: 'Expenditure',
     component: DashboardLayout,
     children: [{
-            path: 'history',
-            name: 'History',
-            component: NotificationHistory
+            path: 'all',
+            name: 'all_expenditure',
+            component: AllExpenditure
         },
         {
-            path: 'send-notification',
-            name: 'PushNotification',
-            component: PushNotification
-        },
-    ]
-}
-
-let promotion = {
-    path: '/promotions',
-    name: 'promos',
-    component: DashboardLayout,
-    children: [{
-            path: 'promote-users',
-            name: 'Promotions',
-            component: Promotions
+            path: 'create',
+            name: 'new_expenditure',
+            component: CreateExpenditure
         },
         {
-            path: 'create-promocode',
-            name: 'CreatePromocode',
-            component: CreatePromocode
+            path: 'alltype',
+            name: 'exp_type',
+            component: AllExpType
         },
         {
-            path: 'promote-users',
-            name: 'PromoteUsers',
-            component: PromoteUsers
+            path: 'type',
+            name: 'create_type',
+            component: CreateExpType
         }
     ]
+
 }
 
-let geofence = {
-    path: '/geofence',
-    name: 'geofence',
-    component: DashboardLayout,
-    children: [{
-            path: 'geofence',
-            name: 'geofence',
-            component: Geofence
-        },
-        {
-            path: 'zone',
-            name: 'Zones',
-            component: Zone
-        },
-        {
-            path: 'heatmap',
-            name: 'Heatmap',
-            component: Heatmap
-        },
-    ]
+let salesPoint = {
+    path: '/sales-point',
+    name: 'SalesPoint',
+    component: SalesPoint,
+    beforeEnter: (to, from, next) => {
+        User.auth().then((result) => {
+            if (result) {
+                next()
+            } else {
+                return next({ name: 'Login' })
+            }
+        }).catch((err) => {
+            return next({ name: 'Login' })
+        })
+    },
 }
 
-let admin = {
-    path: '/admin',
-    name: 'admin',
+let report = {
+    path: '/report',
+    name: 'Report',
     component: DashboardLayout,
+    beforeEnter: (to, from, next) => {
+        User.auth().then((result) => {
+            if (result) {
+                console.log(result.data)
+                if (result.data.role_id == 1) {
+                    next()
+                } else {
+                    return next({ name: 'dashboard' })
+                }
+            } else {
+                return next({ name: 'Login' })
+            }
+        }).catch((err) => {
+            return next({ name: 'Login' })
+        })
+    },
     children: [{
-            path: 'all-admin',
-            name: 'Admin',
-            component: Admin
+            path: 'sales',
+            name: 'sales_report',
+            component: SalesReport
         },
         {
-            path: 'create-admin',
-            name: 'CrateAdmin',
-            component: CreateAdmin
-        },
-    ]
-}
-
-let accounting = {
-    path: '/admin/account',
-    name: 'adminaccount',
-    component: DashboardLayout,
-    children: [{
-            path: '/',
-            name: 'AccountDashboard',
-            component: AccountDashboard
-        },
-        {
-            path: 'transactions',
-            name: 'Transactions',
-            component: Transactions
-        },
-        {
-            path: 'general-report',
-            name: 'GeneralReport',
+            path: 'general',
+            name: 'general_report',
             component: GeneralReport
-        },
-        {
-            path: 'drivers-report',
-            name: 'DriversReport',
-            component: DriversReport
-        },
-        {
-            path: 'passengers-report',
-            name: 'PassengersReport',
-            component: PassengersReport
-        },
-        {
-            path: 'driver-report/:id',
-            name: 'DriverReport',
-            component: DriverReport
-        },
-        {
-            path: 'passenger-report/:id',
-            name: 'PassengerReport',
-            component: PassengerReport
-        },
-        {
-            path: 'trips',
-            name: 'AccountTrips',
-            component: AccountTrips
-        },
-        {
-            path: 'trip-percentage',
-            name: 'TripPercentage',
-            component: TripPercentage
-        },
-
+        }
     ]
 }
 
 const routes = [
-    admin,
-    accounting,
     loginPage,
+    user,
+    report,
+    category,
+    product,
+    salesPoint,
+    purchase,
+    customers,
+    expenditure,
     lockPage,
-    services,
-    geofence,
-    driver,
-    passenger,
-    devices,
-    trips,
-    notification,
-    promotion,
     {
         path: '/admin',
         component: DashboardLayout,
