@@ -30,7 +30,6 @@ import CreateExpType from '../components/Dashboard/Views/Expenditure/CreateType.
 import AllExpType from '../components/Dashboard/Views/Expenditure/AllTypes.vue'
 import CreateExpenditure from '../components/Dashboard/Views/Expenditure/NewExpenditure.vue'
 import AllExpenditure from '../components/Dashboard/Views/Expenditure/AllExpenditure.vue'
-import ExpReport from '../components/Dashboard/Views/Expenditure/ExpenditureReport.vue'
 import SalesPoint from '../components/Dashboard/Views/SalesPoint/PointOfSale.vue'
 import SalesReport from '../components/Dashboard/Views/Report/SalesReport.vue'
 import GeneralReport from '../components/Dashboard/Views/Report/GeneralReport.vue'
@@ -52,6 +51,21 @@ let user = {
     path: '/user',
     name: 'user',
     component: DashboardLayout,
+    beforeEnter: (to, from, next) => {
+        User.auth().then((result) => {
+            if (result) {
+                if (result.data.role_id == 1) {
+                    next()
+                } else {
+                    return next({ name: 'dashboard' })
+                }
+            } else {
+                return next({ name: 'Login' })
+            }
+        }).catch((err) => {
+            return next({ name: 'Login' })
+        })
+    },
     children: [{
             path: 'create',
             name: 'CreateUser',
@@ -222,7 +236,6 @@ let report = {
     beforeEnter: (to, from, next) => {
         User.auth().then((result) => {
             if (result) {
-                console.log(result.data)
                 if (result.data.role_id == 1) {
                     next()
                 } else {

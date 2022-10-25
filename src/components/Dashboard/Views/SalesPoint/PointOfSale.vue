@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="nav w-100 bg-info" style="height:50px">
-        <li class="navBrand">{{business_name}}</li>
+        <li class="navBrand">
+          <a href="/admin/overview"> {{business_name}}</a>
+        </li>
         <li>
           <form action="">
             <input
