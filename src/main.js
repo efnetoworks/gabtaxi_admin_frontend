@@ -1,18 +1,3 @@
-/*!
-
-  =========================================================
-  * Vue Paper Dashboard 2 PRO - V2.3.0
-  =========================================================
-
-  * Product Page: https://www.creative-tim.com/product/vue-paper-dashboard-2-pro
-  * Available with purchase of license from https://www.creative-tim.com/product/vue-paper-dashboard-2-pro
-  * Copyright 2019 Creative Tim (https://www.creative-tim.com)
-  * License Creative Tim (https://www.creative-tim.com/license)
-
-  =========================================================
-
-*/
-
 import Vue from 'vue'
 import './pollyfills'
 import VueRouter from 'vue-router'
@@ -32,6 +17,11 @@ import initProgress from './progressbar';
 import 'datatables.net-dt/js/dataTables.dataTables'
 import 'datatables.net-dt/css/jquery.dataTables.min.css'
 import moment from 'moment'
+// import '@fortawesome/fontawesome-free/css/all.min.css'
+// import '@fortawesome/fontawesome-free/js/all.min.js'
+import 'fontawesome-4.7/css/font-awesome.min.css'
+import 'bootstrap/dist/js/bootstrap.min.js'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 // router setup
 import routes from './routes/routes'
@@ -45,7 +35,6 @@ import './assets/sass/paper-dashboard.scss'
 import './assets/sass/demo.scss'
 
 import sidebarLinks from './sidebarLinks'
-import './registerServiceWorker'
 // helpers
 import Helpers from '../src/javascript/helpers'
 // plugin setup
@@ -63,7 +52,7 @@ window.helpers = Helpers
 
 // configure router
 const router = new VueRouter({
-    mode: 'history',
+    mode: process.env.IS_ELECTRON ? 'hash' : 'history',
     routes, // short for routes: routes
     linkActiveClass: 'active',
     scrollBehavior: (to) => {

@@ -6,7 +6,7 @@ function resolveSrc(_path) {
 }
 module.exports = {
     pwa: {
-        name: 'Vue Paper Dashboard PRO',
+        name: 'My Store',
         themeColor: '#66615B',
         msTileColor: '#66615B',
         appleMobileWebAppCapable: 'yes',
@@ -20,7 +20,7 @@ module.exports = {
         electronBuilder: {
             builderOptions: {
                 productName: "My Store",
-                appId: 'test.com',
+                appId: 'mystore.com',
                 win: {
                     "target": [
                         "nsis"

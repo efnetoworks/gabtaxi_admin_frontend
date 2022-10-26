@@ -84,6 +84,7 @@
       logout(){
         Auth.logout().then(() => {
           localStorage.clear()
+          this.$router.go({name:'Login'})
           this.$router.push({name:'Login'})
         })
       }

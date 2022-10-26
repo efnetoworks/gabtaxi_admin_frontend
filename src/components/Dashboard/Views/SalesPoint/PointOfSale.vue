@@ -2,7 +2,7 @@
   <div>
     <div class="nav w-100 bg-info" style="height:50px">
         <li class="navBrand">
-          <a href="/admin/overview"> {{business_name}}</a>
+          <a @click.prevent="goHome"> {{business_name}}</a>
         </li>
         <li>
           <form action="">
@@ -194,6 +194,10 @@ import User from '@/javascript/Api/User'
         })
       },
 
+      goHome(){
+        this.$router.push("/admin/overview")
+      },
+
       setWallet(){
         this.payment_method = "wallet"
       },
@@ -257,6 +261,7 @@ import User from '@/javascript/Api/User'
       logout(){
         Auth.logout().then(() => {
           localStorage.clear()
+          this.$router.go({name:'Login'})
           this.$router.push({name:'Login'})
         })
       },
