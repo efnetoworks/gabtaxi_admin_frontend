@@ -1,5 +1,5 @@
 <template>
-  <div class="login-page">
+  <div class="login-page" :key="componentKey">
     <app-navbar></app-navbar>
     <div class="wrapper wrapper-full-page">
       <div class="full-page login-page section-image">
@@ -16,7 +16,7 @@
                       </div>
 
                       <div class="form-group">
-                        <input type="email" class="form-control col-6" v-model="details.email" required placeholder="Email Address...">
+                        <input type="email" class="form-control col-6" v-model="details.email" placeholder="Email Address...">
                       </div>
 
                       <div class="form-group">
@@ -32,7 +32,7 @@
                       </div>
 
                       <div class="form-group">
-                        <input type="text" class="form-control col-6" v-model="details.motto" required placeholder="Motto...">
+                        <input type="text" class="form-control col-6" v-model="details.motto" placeholder="Motto...">
                       </div>
 
                       <div class="form-group">
@@ -49,8 +49,8 @@
                 <card type="login">
                   <h3 slot="header" class="header text-center">Login</h3>
 
-                  <fg-input v-model="form.phone"
-                            required placeholder="Phone Number..."></fg-input>
+                  <fg-input v-model="form.phone"  addon-left-icon="nc-icon nc-single-02"
+                            required placeholder="Phone Number"></fg-input>
 
                   <fg-input v-model="form.password" addon-left-icon="nc-icon nc-key-25" placeholder="Password"
                             required type="password"></fg-input>
@@ -73,6 +73,7 @@
   import AppFooter from './Layout/AppFooter'
   import Auth from '@/javascript/Api/Auth'
   import BusinessDetails from '@/javascript/Api/BusinessDetails';
+  import Swal from 'sweetalert2'
 
   export default {
     components: {
@@ -103,23 +104,33 @@
         })
       },
 
-      refresh(){
-        this.$router.go()
-      },
-
       login() {
         if(this.form.phone != null && this.form.password != null){
           Auth.login(this.form).then((result) =>{
             localStorage.setItem("token", result.data.data['access_token'])
-            // window.location.href = '/admin/overview'
+            // window.location.href = "/admin/overview"
             this.$router.push({name:'dashboard'})
           }).catch((err) => {
-            this.message = err.response.data.message
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: "Authentication details incorrect!",
+              customClass: 'Swal-wide',
+              showConfirmButton: false,
+              timer: 3000
+            })
           });
         }else{
-          this.message = "Some fields are missing"
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: "Authentication details incorrect!",
+              customClass: 'Swal-wide',
+              showConfirmButton: false,
+              timer: 3000
+            })
         }
-      }
+      },
     },
 
     data() {
@@ -128,6 +139,7 @@
           phone: '',
           password: '',
         },
+        message:null,
         details:{
           name:'',
           logo:"",
@@ -139,7 +151,8 @@
           vat:'',
           status:'active',
         },
-        getDetails:[]
+        getDetails:[],
+        componentKey:0
       }
     },
     created() {

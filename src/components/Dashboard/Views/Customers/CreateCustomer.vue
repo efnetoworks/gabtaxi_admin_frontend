@@ -10,7 +10,7 @@
 
         <div class="form-group">
           <label for="">Email</label>
-          <input type="email" class="form-control" v-model="form.email" required>
+          <input type="email" class="form-control" v-model="form.email">
         </div>
 
         <div class="form-group">

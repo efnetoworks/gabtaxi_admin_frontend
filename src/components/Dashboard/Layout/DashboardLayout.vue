@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
 
-    <side-bar type="sidebar" :sidebar-links="$sidebar.sidebarLinks">
+    <side-bar :key="sideKey" type="sidebar" :sidebar-links="$sidebar.sidebarLinks">
       <user-menu></user-menu>
     </side-bar>
 
@@ -35,7 +35,8 @@
     },
     data() {
       return {
-        user:null
+        user:null,
+        sideKey:0
       }
     },
     methods: {
@@ -45,6 +46,9 @@
         }
       },
     },
+    created(){
+      // this.sideKey++
+    }
   }
 
 </script>

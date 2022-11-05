@@ -30,6 +30,7 @@
     "datamaps": "^0.5.9",
     "datatables": "^1.10.18",
     "datatables.net-dt": "^1.12.1",
+    "electron-unhandled": "^4.0.1",
     "element-ui": "^2.13.2",
     "firebase": "^9.9.2",
     "fontawesome-4.7": "^4.7.0",

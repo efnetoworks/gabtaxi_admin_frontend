@@ -6,7 +6,7 @@
           <div class="receipt_label">
             <p class="label">Receipt</p>
           </div>
-          <h5 v-if="items != null">#{{ String(items.summary.ref_no).padStart(7, 0)}}</h5>
+          <h5 v-if="summary != null">#{{ String(summary.ref_no).padStart(7, 0)}}</h5>
         </center>
       </div>
       <div class="body">
@@ -20,8 +20,8 @@
                 <th>Total</th>
               </tr>
             </thead>
-            <tbody v-if="items != null">
-              <tr v-for="item in items.products" :key="item">
+            <tbody v-if="products != null">
+              <tr v-for="item in products" :key="item">
                 <td>{{item.name}}</td>
                 <td>{{item.qty}}</td>
                 <td>{{item.price}}</td>
@@ -30,22 +30,22 @@
             </tbody>
           </table>
         </div>
-        <div class="TotalCalc" v-if="items != null">
+        <div class="TotalCalc" v-if="summary != null">
           <div class="row">
             <div class="col-4">Subotal:</div>
-            <div class="col-4">&#8358; {{items.summary.amount}}</div>
+            <div class="col-4">&#8358; {{summary.amount}}</div>
           </div>
           <div class="row">
             <div class="col-4">Discount</div>
-            <div class="col-4">{{items.summary.discount}} %</div>
+            <div class="col-4">{{summary.discount}} %</div>
           </div>
           <div class="row">
             <div class="col-4">V.A.T</div>
-            <div class="col-4">{{items.summary.vat}}</div>
+            <div class="col-4">{{summary.vat}}</div>
           </div>
           <div class="row">
             <div class="col-4">Total</div>
-            <div class="col-4">&#8358; {{Math.ceil(items.summary.total)}}</div>
+            <div class="col-4">&#8358; {{Math.ceil(summary.total)}}</div>
           </div>
         </div>
       </div>
@@ -63,15 +63,42 @@
 </template>
 <script>
   export default{
-    props:{
-      items:null,
-      details:null
-    },
     data() {
       return {
+        products:null,
+        summary:null,
+        details:null
+      }
+    },
+    methods: {
+      printReceipt(){
+        var product = localStorage.getItem('products')
+        var summary = localStorage.getItem('summary')
+        this.products = JSON.parse(product)
+        this.summary = JSON.parse(summary)
+        this.details = localStorage.getItem('details')
+        setTimeout(()=> {
+        window.print()
+          localStorage.removeItem('products')
+        localStorage.removeItem('summary')
+        localStorage.removeItem('details')
+
+        this.$router.push('/sales-point')
+        }, 2000)
 
       }
     },
+    created(){
+      this.printReceipt()
+    }
+    // watch: {
+    //   items(){
+
+    //     if(this.items != null){
+    //       window.print()
+    //     }
+    //   }
+    // }
   }
 </script>
 <style scoped>

@@ -12,5 +12,8 @@ export default {
     },
     sales_today() {
         return Api.post('/sell/today')
+    },
+    cancel_sale(id) {
+        return Api.patch('/sell/delete/' + id)
     }
 }

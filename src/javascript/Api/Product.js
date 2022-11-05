@@ -6,7 +6,7 @@ export default {
     },
 
     update(form, id) {
-        return Api.post('/product/update/' + id, form)
+        return Api.patch('/product/update/' + id, form)
     },
 
     delete(id) {
@@ -19,6 +19,10 @@ export default {
 
     all_report(id) {
         return Api.post('/product/report/all/' + id)
+    },
+
+    upload_image(form) {
+        return Api.post('/product/upload/image', form)
     },
 
     products() {

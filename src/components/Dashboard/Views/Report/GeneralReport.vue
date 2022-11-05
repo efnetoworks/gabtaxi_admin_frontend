@@ -16,6 +16,14 @@
                 <label for="">End Date</label>
                 <input type="date" v-model="form.end_date" class="form-control col-6" required>
               </div>
+              <div class="form-group">
+                <label for="">Platform</label>
+                <select name="" v-model="form.platform" class="form-control col-6" id="" required>
+                  <option value="online">Online</option>
+                  <option value="offline">Offline</option>
+                  <option value="all">All</option>
+                </select>
+              </div>
               <button class="btn btn-success" type="submit">Generate</button>
             </form>
           </div>
@@ -47,12 +55,14 @@
                 <tr>
                   <th>Product</th>
                   <th>Count</th>
+                  <th>Current Stock</th>
                 </tr>
               </thead>
               <tbody :key="trendKey">
                 <tr v-for="product in productTrend" :key="product.id">
                   <td>{{product.name}}</td>
                   <td>{{product.count}}</td>
+                  <td>{{product.stock}}</td>
                 </tr>
               </tbody>
             </table>
@@ -79,8 +89,11 @@
               <td v-else>null</td>
               <td>{{dateTime(transaction.created_at)}}</td>
               <td>
-                <button @click.prevent="details(transaction.id)" class="btn btn-info">
+                <button @click.prevent="details(transaction.id)" class="btn btn-info mr-2" title="View Details" >
                   <i class="fa fa-eye" aria-hidden="true"></i>
+                </button>
+                <button @click.prevent="deleteSale(transaction.id)" data-toggle="tooltip" data-placement="top" title="Cancel Receipt" class="btn btn-danger">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
               </td>
             </tr>
@@ -129,13 +142,14 @@ import { Button, Modal } from '@/components/UIComponents'
 import Purchases from '@/javascript/Api/Purchases'
 import Report from '@/javascript/Api/Reports'
 import helpers from '@/javascript/helpers'
+import Sales from '@/javascript/Api/Sales'
   export default{
     components: {
       Modal
     },
     data() {
       return {
-        form:{start_date:null, end_date:null},
+        form:{start_date:null, end_date:null, platform:"all"},
         transactions:null,
         purchases:null,
         expenditures: null,
@@ -197,14 +211,16 @@ import helpers from '@/javascript/helpers'
               product.push({
                 id:element.product_id,
                 name:element.product.name,
-                count:1
+                count:1,
+                stock:element.product.stock
               })
             }
           }else{
               product.push({
                 id:element.product_id,
                 name:element.product.name,
-                count:1
+                count:1,
+                stock:element.product.stock
               })
             }
         });
@@ -225,7 +241,6 @@ import helpers from '@/javascript/helpers'
       },
 
       getSummary(){
-
         // getCost
         Purchases.purchases().then((result) => {
           var totalsales = 0
@@ -257,6 +272,12 @@ import helpers from '@/javascript/helpers'
           this.totalsales = totalsales
 
           this.getProductTrend()
+        })
+      },
+
+      deleteSale(id){
+        Sales.cancel_sale(id).then((result) => {
+          this.filter()
         })
       }
 

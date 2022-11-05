@@ -1,7 +1,18 @@
 <template>
   <div>
     <!--Stats cards-->
-    <center><h1>Daily Summary</h1></center>
+    <center><h1>DAILY SUMMARY {{this.toggle.toUpperCase()}}</h1>
+      <br/>
+      <select name="" id="" v-model="toggle" class="form-control col-4" @change="sales_today">
+        <option value="all">All</option>
+        <option value="online">Online</option>
+        <option value="offline">Offline</option>
+      </select>
+    </center>
+
+    <br />
+
+
     <div class="row">
       <div class="col-lg-3 col-md-6 col-sm-6" v-for="stats in statsCards" :key="stats">
         <stats-card :type="stats.type"
@@ -48,6 +59,7 @@ import Sales from '@/javascript/Api/Sales';
     data () {
       return {
         user:[],
+        toggle:"all",
         all:null,
         completedTrips:null,
         cancelledTrips:null,
@@ -89,6 +101,13 @@ import Sales from '@/javascript/Api/Sales';
             value: 0,
             footerText: 'Realtime Update',
           },
+          {
+            type: 'dark',
+            icon: 'fa fa-exchange',
+            title: 'Credit Sales',
+            value: 0,
+            footerText: 'Realtime Update',
+          },
         ],
         sales:null
       }
@@ -96,19 +115,22 @@ import Sales from '@/javascript/Api/Sales';
     methods: {
       sales_today(){
         Sales.sales_today().then((result) => {
-          this.sales = result.data.data
+          this.sales = result.data.data[this.toggle]
           var cash = 0
           var card = 0
           var transfer = 0
           var wallet = 0
+          var onCredit = 0
 
           for (let index = 0; index < this.sales.length; index++) {
             if(this.sales[index].sales[0].payment_method == "cash"){
               cash =  cash + this.sales[index].amount
-            }else if(this.sales[index].payment_method == "card"){
+            }else if(this.sales[index].sales[0].payment_method == "card"){
               card =  card + this.sales[index].amount
-            }else if(this.sales[index].payment_method == "transfer"){
+            }else if(this.sales[index].sales[0].payment_method == "transfer"){
               transfer =  transfer + this.sales[index].amount
+            }else if(this.sales[index].sales[0].payment_method == "on_credit"){
+              onCredit =  onCredit + this.sales[index].amount
             }else{
               wallet =  wallet + this.sales[index].amount
             }
@@ -117,6 +139,7 @@ import Sales from '@/javascript/Api/Sales';
           this.statsCards[1].value = card
           this.statsCards[2].value = transfer
           this.statsCards[3].value = wallet
+          this.statsCards[4].value = onCredit
         })
       }
     },

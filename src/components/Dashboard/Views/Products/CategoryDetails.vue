@@ -18,12 +18,12 @@
           <tbody>
             <tr v-for="(product, index) in products" :key="product.id">
               <td>{{index+1}}</td>
-              <td>{{product.name}}</td>
-              <td>{{product.code}}</td>
-              <td>{{product.category_id}}</td>
-              <td>{{product.stock.toLocaleString()}}</td>
-              <td>{{product.price.toLocaleString()}}</td>
-              <td>{{product.out_of_stock.toLocaleString()}}</td>
+              <td>{{product[0].name}}</td>
+              <td>{{product[0].code}}</td>
+              <td>{{product[0].category_id}}</td>
+              <td>{{product[0].stock.toLocaleString()}}</td>
+              <td>{{product[0].price.toLocaleString()}}</td>
+              <td>{{product[0].out_of_stock.toLocaleString()}}</td>
             </tr>
           </tbody>
         </table>

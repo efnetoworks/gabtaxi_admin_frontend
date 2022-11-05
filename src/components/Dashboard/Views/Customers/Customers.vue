@@ -76,7 +76,8 @@
         tableKey:0,
         customer:null,
         fund:{
-          amount:null
+          amount:null,
+          platform: 'offline'
         },
         modals: {
           classic: false,
@@ -104,7 +105,7 @@
           Swal.fire({
             position: 'top-end',
             icon: 'success',
-            title: result.data.message,
+            title: "Account deactivated",
             customClass: 'Swal-wide',
             showConfirmButton: false,
             timer: 3000
@@ -114,7 +115,7 @@
           Swal.fire({
             position: 'top-end',
             icon: 'error',
-            title: result.data.message,
+            title: "Error deactivating customer!",
             customClass: 'Swal-wide',
             showConfirmButton: false,
             timer: 3000
@@ -126,7 +127,7 @@
           Swal.fire({
             position: 'top-end',
             icon: 'success',
-            title: result.data.message,
+            title: "Account Credited Successfully",
             customClass: 'Swal-wide',
             showConfirmButton: false,
             timer: 3000
@@ -137,7 +138,7 @@
           Swal.fire({
             position: 'top-end',
             icon: 'error',
-            title: result.data.message,
+            title: "Error funding wallet!",
             customClass: 'Swal-wide',
             showConfirmButton: false,
             timer: 3000
@@ -162,7 +163,7 @@
         });
       },
 
-          filter_table(){
+      filter_table(){
                 if(this.filter == 1){
                     this.all_Customers = this.all_Customers
                     this.api_refresh()
@@ -179,7 +180,7 @@
                    this.all_Customers = this.vip_Customers
                    this.api_refresh()
                 }
-          },
+      },
         api_refresh(){
             this.allCustomers()
         },

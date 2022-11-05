@@ -33,12 +33,18 @@ import AllExpenditure from '../components/Dashboard/Views/Expenditure/AllExpendi
 import SalesPoint from '../components/Dashboard/Views/SalesPoint/PointOfSale.vue'
 import SalesReport from '../components/Dashboard/Views/Report/SalesReport.vue'
 import GeneralReport from '../components/Dashboard/Views/Report/GeneralReport.vue'
+import Receipt from '../components/Dashboard/Views/SalesPoint/Receipt.vue'
 
 
 let loginPage = {
     path: '/',
     name: 'Login',
     component: Login
+}
+let receipt = {
+    path: '/receipt',
+    name: 'receipt',
+    component: Receipt
 }
 
 let lockPage = {
@@ -271,6 +277,7 @@ const routes = [
     purchase,
     customers,
     expenditure,
+    receipt,
     lockPage,
     {
         path: '/admin',

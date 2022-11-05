@@ -40,7 +40,7 @@
     </div>
          <!-- update modal -->
          <modal :show.sync="modals.classic" headerClasses="justify-content-center">
-          <h4 slot="header" class="title title-up" v-show="updateMode">{{ modalTitle }}</h4>
+          <h4 slot="header" class=" title title-up" v-show="updateMode">{{ modalTitle }}</h4>
           <h4 slot="header" class="title title-up" v-show="!updateMode">{{ modalTitle }}</h4>
             <div v-if="form != null">
               <form @submit.prevent="update">
@@ -50,7 +50,11 @@
                   </div>
                   <div class="form-group">
                     <label for="">Category</label>
-                    <input type="text" v-model="form.category_id" class="form-control">
+                    <select name="" v-model="form.category_id" class="form-control" id="">
+                      <option v-for="category in categories" :key="category.id" :value="category.id">
+                        {{ category.name }}
+                      </option>
+                    </select>
                   </div>
                   <div class="form-group">
                     <label for="">Price</label>
@@ -64,10 +68,34 @@
                     <label for="">Product Code</label>
                     <input type="text" v-model="form.code" class="form-control">
                   </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                  </div>
               </form>
-              <div class="form-group">
-                <button type="submit" class="btn btn-success">Submit</button>
-              </div>
+              <hr>
+              <form @submit.prevent="upload">
+                <div class="form-group">
+                  <label for="">Image 1</label>
+                  <input type="file" @change="uploadImage($event.target.files, 1)" class="form-control" required>
+                  <img :src="upl_image1" alt="" height="60" width="80" class="ml-2"><br/>
+                </div>
+                <div class="form-group">
+                  <label for="">Image 2</label>
+                  <input type="file" @change="uploadImage($event.target.files, 2)" class="form-control" >
+                  <img :src="upl_image2" alt="" height="60" width="80" class="ml-2"><br/>
+                </div>
+                <div class="form-group">
+                  <label for="">Image 3</label>
+                  <input type="file" @change="uploadImage($event.target.files, 3)" class="form-control" >
+                  <img :src="upl_image3" alt="" height="60" width="80" class="ml-2"><br/>
+                </div>
+                <div class="form-group">
+                  <label for="">Image 4</label>
+                  <input type="file" @change="uploadImage($event.target.files, 4)" class="form-control" >
+                  <img :src="upl_image4" alt="" height="60" width="80" class="ml-2"><br/>
+                </div>
+                <button type="submit" class="btn btn-primary">Upload Files</button>
+              </form>
             </div>
           <template slot="footer">
           <p-button type="default" link @click.prevent="modals.classic = false">Close</p-button>
@@ -79,6 +107,7 @@
 <script>
   import { Modal } from '@/components/UIComponents'
   import Product from '@/javascript/Api/Product'
+  import Category from '@/javascript/Api/Categories'
   import Swal from 'sweetalert2'
 
   export default{
@@ -95,14 +124,78 @@
         form:null,
         modalTitle:null,
         products: null,
+        images:[],
         modals: {
           classic: false,
           notice: false,
           mini: false
         },
+        upl_image1:null,
+        upl_image2:null,
+        upl_image3:null,
+        upl_image4:null,
+        categories:null,
+        previewImage:null
       }
     },
     methods: {
+      uploadImage(e, id){
+        console.log(e[0])
+       this.images.push(e[0])
+        var image = e[0]
+          const reader = new FileReader();
+          reader.readAsDataURL(image);
+          reader.onload = e =>{
+            this.previewImage = e.target.result
+            if(id == 1){
+              this.upl_image1 = e.target.result
+            }
+            if(id == 2){
+              this.upl_image2 = e.target.result
+            }
+            if(id == 3){
+              this.upl_image3 = e.target.result
+            }
+            if(id == 4){
+              this.upl_image4 = e.target.result
+            }
+          };
+      },
+      upload(){
+        var formData = new FormData()
+        formData.append('product_id', this.form.id )
+        formData.append('image', this.images )
+        Product.upload_image(formData).then((result) => {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: result.data.message,
+              customClass: 'Swal-wide',
+              showConfirmButton: false,
+              timer: 3000
+            })
+            this.images = []
+            this.upl_image1 = null
+            this.upl_image2 = null
+            this.upl_image3 = null
+            this.upl_image4 = null
+
+        }).catch((err) => {
+          Swal.fire({
+              position: 'top-end',
+              icon: 'warning',
+              title: 'error uploading images',
+              customClass: 'Swal-wide',
+              showConfirmButton: false,
+              timer: 3000
+            })
+        });
+      },
+      allcategories(){
+        Category.categories().then((result) => {
+            this.categories = result.data.data
+        })
+      },
       goToRoute(product){
         this.$router.push('/product/detail/'+product.id)
       },
@@ -117,21 +210,24 @@
       },
       update(){
         Product.update(this.form, this.form.id).then((result) => {
-          Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: result.data.message,
-            customClass: 'Swal-wide',
-            showConfirmButton: false,
-            timer: 3000
-          })
-          this.rows.category = [{name:null}]
-          this.allcategories()
-        }).catch((err) => {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: result.data.message,
+              customClass: 'Swal-wide',
+              showConfirmButton: false,
+              timer: 3000
+            })
+            this.modals.classic = false
+            this.get_product();
+            this.tableKey++
+            this.datatable()
+          }).catch(err => {
+          this.modals.classic = false
           Swal.fire({
             position: 'top-end',
             icon: 'error',
-            title: err.data.message,
+            title: "error",
             customClass: 'Swal-wide',
             showConfirmButton: false,
             timer: 3000
@@ -203,6 +299,7 @@
     },
     created(){
       this.get_product()
+      this.allcategories()
     }
 
   }

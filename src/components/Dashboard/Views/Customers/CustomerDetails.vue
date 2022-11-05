@@ -42,6 +42,7 @@
               <th>Type</th>
               <th>Amount</th>
               <th>Ref</th>
+              <th>Platform</th>
               <th>Date</th>
             </tr>
           </thead>
@@ -51,6 +52,7 @@
               <td>{{transaction.type}}</td>
               <td>{{transaction.amount.toLocaleString()}}</td>
               <td>{{transaction.sales_ref}}</td>
+              <td>{{transaction.platform}}</td>
               <td>{{dateTime(transaction.created_at)}}</td>
             </tr>
           </tbody>

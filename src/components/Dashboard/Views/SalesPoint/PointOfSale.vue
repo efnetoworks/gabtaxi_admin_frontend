@@ -16,7 +16,7 @@
           </form>
           <ul class="col-11">
             <li class="productList" v-for="product in searchResult" :key="product" @click="addProduct(product)">
-              {{ product.name.toUpperCase()}}
+              {{ product.name}}
               <b>
                 <small class="bg-dark w-100 text-light"> {{product.price.toLocaleString()}}</small>
               </b>
@@ -45,9 +45,9 @@
                 <td>{{index+1}}</td>
                 <td>{{order.name}}</td>
                 <td>
-                   <input type="number" min="1" :max="order.stock" step="any" v-model="order.qty" @input="updateOrder(order.qty, index)" class="form-control col-3">
+                   <input type="number" min="1" :max="order.stock" step="any" v-model="order.qty" @input="updateOrder(order.qty, index, true)" class="form-control col-3">
                 </td>
-                <td>&#8358; {{order.price.toLocaleString()}}</td>
+                <td>&#8358; <input type="number" v-model="order.price" step="any" @input="updateOrder(order.price, index, false)" style="border: 1px solid white"></td>
                 <td>&#8358; {{(order.price * order.qty).toLocaleString()}}</td>
                 <td>
                   <button class="btn btn-danger" @click="removeFromList(index)"><i class="fa fa-trash" aria-hidden="true"></i></button>
@@ -87,13 +87,21 @@
                 v-model="searchCustomer"
                 placeholder="search customer">
                 <span v-if="this.customer_id > 0">
-                  <input v-model="from_wallet" @change="setWallet" :disabled="this.total > this.customerWallet_balance" type="checkbox" value="1"> From Wallet
+                  <div class="row">
+                    <div class="col-12">
+                      <input v-model="from_wallet" @change="setWallet" :disabled="this.total > this.customerWallet_balance" type="checkbox" value="1"> Wallet
                   <small class="text-danger" v-if="this.total > this.customerWallet_balance">customer cannot afford this bill from wallet</small>
+                    </div>
+                    <div class="col-12">
+                      <input v-model="on_credit" @change="setCredit" type="checkbox" value="1"> Credit
+                    </div>
+                  </div>
+
                 </span>
             </div>
             <ul class="col-11">
               <li class="productList" v-for="customer in customerSearch" :key="customer" @click="addCustomer(customer)">
-                {{ customer.name.toUpperCase()}}
+                {{ customer.name}}
               </li>
             </ul>
           </div>
@@ -120,13 +128,16 @@
                 <option value="cash">Cash</option>
                 <option value="transfer">Transfer</option>
                 <option value="card">Card</option>
-                <option v-if="this.total < this.customerWallet_balance" value="wallet">Wallet</option>
+                <option value="on_credit">On Credit</option>
+                <option v-if="total <= customerWallet_balance && customer_id != null " value="wallet">Wallet</option>
               </select>
             </div>
             <div class="form-group ml-5">
               <label for=""></label><br />
               <button class="btn btn-success mr-2" @click.prevent="pay">Pay <i class="fa fa-money" aria-hidden="true"></i></button>
               <button class="btn btn-grey" @click.prevent="reset">Reset <i class="fa fa-refresh" aria-hidden="true"></i></button>
+              <button class="btn btn-grey" @click.prevent="printReceipt">Print Receipt <i class="fa fa-print" aria-hidden="true"></i></button>
+
             </div>
           </div>
         </div>
@@ -137,9 +148,7 @@
 
       </div>
     </div>
-    <div class="receipt">
-      <receipt v-show="showReceipt" :items="response" :details="business_name"/>
-    </div>
+      <!-- <receipt :key="receiptKey" v-show="receipt" :items="response" :details="business_name"/> -->
   </div>
 </template>
 <script>
@@ -161,12 +170,16 @@ import User from '@/javascript/Api/User'
         is_discount_code: 0,
         discount_code: null,
         from_wallet:false,
+        on_credit:false,
         payment_method:"cash",
         products: [],
         allProducts: null,
+        platform: "offline",
+        receiptKey: 0,
         searchParam:"",
         searchResult: [],
         allCustomers:null,
+        receipt: false,
         customerSearch:[],
         searchCustomer:"",
         subtotal:0,
@@ -183,9 +196,13 @@ import User from '@/javascript/Api/User'
     },
 
     methods: {
-      updateOrder(qty, index){
-          this.products[index].qty = qty
-          this.getTotal()
+      updateOrder(qty, index, isQty){
+          if(isQty){
+            this.products[index].qty = qty
+            this.getTotal()
+          }else{
+            this.getTotal()
+          }
       },
 
       getProducts(){
@@ -202,10 +219,32 @@ import User from '@/javascript/Api/User'
         this.payment_method = "wallet"
       },
 
+      setCredit(){
+        this.payment_method = "on_credit"
+      },
+
       getCustomers(){
         Customer.customers().then((result) => {
           this.allCustomers = result.data.data
         })
+      },
+
+      printReceipt(){
+        this.$router.push('/receipt')
+      },
+
+      searchProduct(){
+        // get detail from products where then name == orderData.request
+          this.searchResult = []
+          this.allProducts.forEach(product => {
+            var request  = this.searchParam.toLowerCase()
+              var productName = product.name.toLowerCase()
+                if (request != "" && request !== " " && productName.match(request))
+                  {
+                    this.searchResult.push(
+                    {product_id:product.id, stock:product.stock, name:product.name,qty: 1,price: product.price,},)
+                  }
+          });
       },
 
       addProduct(product){
@@ -261,7 +300,6 @@ import User from '@/javascript/Api/User'
       logout(){
         Auth.logout().then(() => {
           localStorage.clear()
-          this.$router.go({name:'Login'})
           this.$router.push({name:'Login'})
         })
       },
@@ -270,27 +308,6 @@ import User from '@/javascript/Api/User'
           this.business_name = result.data.name
         })
       },
-      addCustomer(customer){
-        this.customer_id = customer.id
-        this.customerSearch = []
-        this.searchCustomer = customer.name.toUpperCase()
-        this.customerWallet_balance = customer.wallet_balance
-      },
-
-      searchProduct(){
-        // get detail from products where then name == orderData.request
-          this.searchResult = []
-          this.allProducts.forEach(product => {
-            var request  = this.searchParam.toLowerCase()
-              var productName = product.name.toLowerCase()
-                if (request != "" && request !== " " && productName.match(request))
-                  {
-                    this.searchResult.push(
-                    {product_id:product.id, stock:product.stock, name:product.name,qty: 1,price: product.price,},)
-                  }
-          });
-      },
-
       search_customer(){
         // get detail from products where then name == orderData.request
           this.customerSearch = []
@@ -300,9 +317,16 @@ import User from '@/javascript/Api/User'
                 if (request != "" && request !== " " && customerName.match(request))
                   {
                     this.customerSearch.push(
-                    {id:customer.id,name:customer.fullname,wallet_balance:customer.wallet_balance})
+                    {id:customer.id,name:customer.fullname.toUpperCase(),wallet_balance:customer.wallet_balance})
                   }
           });
+      },
+
+      addCustomer(customer){
+        this.customer_id = customer.id
+        this.customerSearch = []
+        this.searchCustomer = customer.name.toUpperCase()
+        this.customerWallet_balance = customer.wallet_balance
       },
 
       removeFromList(index){
@@ -315,18 +339,28 @@ import User from '@/javascript/Api/User'
           "is_discount_code": this.is_discount_code,
           "discount_code": this.discount_code,
           "from_wallet": this.from_wallet,
+          "on_credit" : this.on_credit,
           "payment_method": this.payment_method,
           "products": this.products,
+          "platform": this.platform
         }
         Sales.new_sale(post).then((result) => {
           this.response = {products: this.products, summary:result.data.data}
-          this.showReceipt = true
+          localStorage.setItem('products', JSON.stringify(this.response.products))
+          localStorage.setItem('summary', JSON.stringify(this.response.summary))
+          localStorage.setItem('details', this.business_name)
+          this.receiptKey++
           this.reset()
-
+          this.showReceipt = true
+          this.customer_id = null
+          this.customerWallet_balance = 0
+          this.customerSearch = [],
+          this.searchCustomer = "",
+          this.on_credit = false
           Swal.fire({
             position: 'top-end',
             icon: 'success',
-            title: result.data.message,
+            title: 'Sold',
             customClass: 'Swal-wide',
             showConfirmButton: false,
             timer: 3000
@@ -342,6 +376,7 @@ import User from '@/javascript/Api/User'
         this.is_discount_code = 0
         this.discount_code = null
         this.from_wallet = false
+        this.on_credit = false
         this.payment_method = "cash"
         this.products = []
       },
@@ -486,16 +521,18 @@ import User from '@/javascript/Api/User'
   }
 
   @media print {
-    body * {
-      visibility: hidden;
+    * { margin: 0 !important; padding: 0 !important; }
+    #controls, .footer, .footerarea{ display: none; }
+    html, body {
+      /*changing width to 100% causes huge overflow and wrap*/
+      height:100%;
+      overflow: hidden;
+      background: #FFF;
+      font-size: 9.5pt;
     }
-    .receipt * {
-      visibility: visible;
-    }
-    .receipt {
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
- }
+
+    .receipt { width: auto; left:0; top:0; }
+    img { width:100%; }
+    li { margin: 0 0 10px 20px !important;}
+  }
 </style>
