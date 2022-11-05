@@ -74,26 +74,11 @@
               </form>
               <hr>
               <form @submit.prevent="upload">
-                <div class="form-group">
-                  <label for="">Image 1</label>
-                  <input type="file" @change="uploadImage($event.target.files, 1)" class="form-control" required>
-                  <img :src="upl_image1" alt="" height="60" width="80" class="ml-2"><br/>
-                </div>
-                <div class="form-group">
-                  <label for="">Image 2</label>
-                  <input type="file" @change="uploadImage($event.target.files, 2)" class="form-control" >
-                  <img :src="upl_image2" alt="" height="60" width="80" class="ml-2"><br/>
-                </div>
-                <div class="form-group">
-                  <label for="">Image 3</label>
-                  <input type="file" @change="uploadImage($event.target.files, 3)" class="form-control" >
-                  <img :src="upl_image3" alt="" height="60" width="80" class="ml-2"><br/>
-                </div>
-                <div class="form-group">
-                  <label for="">Image 4</label>
-                  <input type="file" @change="uploadImage($event.target.files, 4)" class="form-control" >
-                  <img :src="upl_image4" alt="" height="60" width="80" class="ml-2"><br/>
-                </div>
+                  <div class="form-group">
+                    <label for="">Image 1</label>
+                    <input type="file" @change="uploadImage($event.target.files)" class="form-control" required>
+                    <img :src="upl_image" alt="" height="60" width="80" class="ml-2"><br/>
+                  </div>
                 <button type="submit" class="btn btn-primary">Upload Files</button>
               </form>
             </div>
@@ -124,47 +109,30 @@
         form:null,
         modalTitle:null,
         products: null,
-        images:[],
+        img:null,
         modals: {
           classic: false,
           notice: false,
           mini: false
         },
-        upl_image1:null,
-        upl_image2:null,
-        upl_image3:null,
-        upl_image4:null,
-        categories:null,
-        previewImage:null
+        upl_image:null,
       }
     },
     methods: {
-      uploadImage(e, id){
-        console.log(e[0])
-       this.images.push(e[0])
+      uploadImage(e){
+        this.img = e[0]
         var image = e[0]
           const reader = new FileReader();
           reader.readAsDataURL(image);
           reader.onload = e =>{
-            this.previewImage = e.target.result
-            if(id == 1){
-              this.upl_image1 = e.target.result
-            }
-            if(id == 2){
-              this.upl_image2 = e.target.result
-            }
-            if(id == 3){
-              this.upl_image3 = e.target.result
-            }
-            if(id == 4){
-              this.upl_image4 = e.target.result
-            }
+            var previewImage = e.target.result;
+            this.upl_image = previewImage;
           };
       },
       upload(){
         var formData = new FormData()
         formData.append('product_id', this.form.id )
-        formData.append('image', this.images )
+        formData.append('image', this.img)
         Product.upload_image(formData).then((result) => {
             Swal.fire({
               position: 'top-end',
@@ -174,12 +142,9 @@
               showConfirmButton: false,
               timer: 3000
             })
-            this.images = []
-            this.upl_image1 = null
-            this.upl_image2 = null
-            this.upl_image3 = null
-            this.upl_image4 = null
-
+            this.upl_image = null
+            this.img = null
+            this.modals.classic = false
         }).catch((err) => {
           Swal.fire({
               position: 'top-end',
