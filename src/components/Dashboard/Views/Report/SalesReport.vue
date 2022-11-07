@@ -13,6 +13,14 @@
             <label for="">End Date</label>
             <input type="date" v-model="form.end_date" class="form-control col-6" required>
           </div>
+          <div class="form-group">
+            <label for="">Platform</label>
+            <select name="" id="" v-model="form.platform" class="form-control col-6">
+              <option value="all">All</option>
+              <option value="offline">Offline</option>
+              <option value="online">Online</option>
+            </select>
+          </div>
           <button class="btn btn-success" type="submit">Generate</button>
         </form>
         <div>
@@ -66,7 +74,7 @@ import helpers from '@/javascript/helpers'
     },
     data() {
       return {
-        form:{start_date:null, end_date:null},
+        form:{start_date:null, end_date:null, platform:'all'},
         all_sales:null,
         tableKey:0,
         total:0

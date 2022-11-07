@@ -128,7 +128,7 @@
                 <option value="cash">Cash</option>
                 <option value="transfer">Transfer</option>
                 <option value="card">Card</option>
-                <option value="on_credit">On Credit</option>
+                <option v-if="customer_id != null " value="on_credit">On Credit</option>
                 <option v-if="total <= customerWallet_balance && customer_id != null " value="wallet">Wallet</option>
               </select>
             </div>
